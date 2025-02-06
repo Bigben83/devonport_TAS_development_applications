@@ -67,15 +67,12 @@ doc.css('.wpfd-search-result tbody tr').each do |row|  # Ensure we are iterating
   council_reference = title_reference.split(' - ').first
   address = title_reference.split(' - ')[1]
   description = title_reference.split(' - ')[2..-2].join(' - ')
-  
-  # Extract the date the document was created
-  date_received = row.at_css('.file_created').text.strip
-
-  # Extract the document URL
   document_description = row.at_css('.wpfd_downloadlink')['href']
-  
-  # Extract the date when the application is on notice
+  date_received = row.at_css('.file_created').text.strip
+  date_received = Date.strptime(date_received, "%d %B %Y").to_s
+
   on_notice_to = title_reference.match(/ends (\d{1,2} [A-Za-z]+ \d{4})/)&.captures&.first
+  on_notice_to = Date.strptime(on_notice_to, "%d %B %Y").to_s
 
   # Log the extracted data for debugging purposes
   logger.info("Extracted Data: Council Reference: #{council_reference}, Address: #{address}, Description: #{description}, Date Received: #{date_received}, On Notice To: #{on_notice_to}, Document URL: #{document_description}")
