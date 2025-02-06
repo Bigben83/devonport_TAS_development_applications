@@ -72,7 +72,12 @@ doc.css('.wpfd-search-result tbody tr').each do |row|  # Ensure we are iterating
   date_received = Date.strptime(date_received, "%d-%m-%Y").to_s
 
   on_notice_to = title_reference.match(/ends (\d{1,2} [A-Za-z]+ \d{4})/)&.captures&.first
-  on_notice_to = Date.strptime(on_notice_to, "%d %B %Y").to_s
+  # If on_notice_to is not nil, parse it using the correct format
+  if on_notice_to
+    on_notice_to = Date.strptime(on_notice_to, "%d %B %Y").to_s  # Format is already correct: "10 February 2025"
+  else
+    on_notice_to = nil  # Handle cases where the date is not available
+  end
 
   # Log the extracted data for debugging purposes
   logger.info("Extracted Data: Council Reference: #{council_reference}, Address: #{address}, Description: #{description}, Date Received: #{date_received}, On Notice To: #{on_notice_to}, Document URL: #{document_description}")
