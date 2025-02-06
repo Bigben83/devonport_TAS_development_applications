@@ -59,7 +59,8 @@ stage_status = ''
 document_description = ''
 date_scraped = Date.today.to_s
 
-doc.css('.wpfd-search-result').each do |row|
+# Step 4: Extract data for each document from each row in the table
+doc.css('.wpfd-search-result tbody tr').each do |row|  # Ensure we are iterating over all rows
   title_reference = row.at_css('.wpfd_downloadlink')['title']
   
   # Split the title into council_reference, address, and description
